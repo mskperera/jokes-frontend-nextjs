@@ -1,9 +1,97 @@
-.page{
-
-}
-
-.main {
+.container {
   display: flex;
   justify-content: center;
+}
+
+.box {
+  width: 40%;
+  background-color: rgb(247, 247, 247);
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+justify-content: center;
+}
+
+
+.headerContainer{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.boxFields {
+  display: flex;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.dropdown {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.button {
+  width: 50%;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #357ab7;
+}
+
+.title {
+  text-align: center;
+  color: #4a90e2;
+  margin-bottom: 20px;
+}
+
+
+.jokeContainer {
   margin-top: 2rem;
+}
+
+.select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 300px;
+}
+
+.select:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  min-height: 120px;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.textarea:focus {
+  border-color: #4a90e2;
+  outline: none;
 }
