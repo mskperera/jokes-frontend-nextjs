@@ -1,6 +1,6 @@
 // src/hooks/useAuth.ts
 import { useState, useEffect } from "react";
-import jwtDecode from 'jwt-decode'; // Ensure correct import
+import {jwtDecode} from 'jwt-decode'; // Ensure correct import
 import { useRouter } from 'next/navigation';
 
 export const useAuth = () => {
@@ -16,7 +16,7 @@ export const useAuth = () => {
     }
 
     try {
-      const decodedToken = jwtDecode(token);
+      const decodedToken:DecodedToken = jwtDecode(token);
       const isTokenExpired = decodedToken.exp * 1000 < Date.now();
       
       if (!isTokenExpired) {

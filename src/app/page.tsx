@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import styles from "./page.module.css";
 
 const DeliverJokePage = () => {
-  const [joke, setJoke] = useState('');
+  const [joke, setJoke] = useState<any>(''); // Type can be refined further if needed
   const [loading, setLoading] = useState(false);
   const [jokeType, setJokeType] = useState('');
-  const [jokeTypes, setJokeTypes] = useState([]);
+  const [jokeTypes, setJokeTypes] = useState<JokeType[]>([]); // Set state type as JokeType[]
 
   useEffect(() => {
     // Fetch available joke types when component mounts
@@ -43,24 +43,24 @@ const DeliverJokePage = () => {
         <h1 className={styles.title}>Want a laugh?</h1>
          <h3>  Choose a joke type and let’s brighten your day with a perfect joke just for you!</h3>
 
-<div className={styles.headerContainer}>
-        <div className={styles.dropdown}>
-          <label htmlFor="jokeType">Joke Type: </label>
-          <select 
-            id="jokeType" 
-            value={jokeType} 
-            onChange={(e) => setJokeType(e.target.value)}
-            className={styles.select}
-          >
-            {jokeTypes.map((type) => (
-              <option key={type.id} value={type.id}>{type.name}</option>
-            ))}
-          </select>
-        </div>
-        
-        <button className={styles.button} onClick={fetchJoke}>
-          View Joke
-        </button>
+        <div className={styles.headerContainer}>
+          <div className={styles.dropdown}>
+            <label htmlFor="jokeType">Joke Type: </label>
+            <select 
+              id="jokeType" 
+              value={jokeType} 
+              onChange={(e) => setJokeType(e.target.value)}
+              className={styles.select}
+            >
+              {jokeTypes.map((type) => (
+                <option key={type.id} value={type.id}>{type.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <button className={styles.button} onClick={fetchJoke}>
+            View Joke
+          </button>
         </div>
 
         {loading ? (
@@ -73,16 +73,13 @@ const DeliverJokePage = () => {
                 <p>{joke.typeName}</p> */}
               </div>
               <div className={styles.boxFields}>
-              <textarea
-              className={styles.textarea}
-              rows="4"
-              cols="50"
-              value={joke.content}
-              disabled
-            ></textarea>
-
-      
-
+                <textarea
+                  className={styles.textarea}
+                  rows={4}
+                  cols={50}
+                  value={joke.content}
+                  disabled
+                ></textarea>
               </div>
             </div>
           )
