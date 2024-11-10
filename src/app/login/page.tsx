@@ -16,7 +16,7 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://43.205.230.104:8001/api/auth/login', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

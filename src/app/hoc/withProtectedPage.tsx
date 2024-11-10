@@ -9,6 +9,7 @@ export const withProtectedPage = (Component: React.ComponentType) => {
     const router = useRouter();
 
     useEffect(() => {
+      console.log('aaaaaau',isAuthenticated)
       if (!isAuthenticated) {
         // Redirect to login if not authenticated
         router.push("/login");
