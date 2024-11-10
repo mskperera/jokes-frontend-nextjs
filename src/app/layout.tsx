@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Navbar } from "@/components/Navbar"; // Import the Navbar component
+import { AuthProvider } from "@/app/context/AuthContext"; // Import AuthProvider
 import "./globals.css";
-import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 // Local font configuration
 const geistSans = localFont({
@@ -28,25 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <AuthProvider>
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable}`}
-        suppressHydrationWarning
-      >
-        {/* <ProgressBar
-          height="4px"
-          color="#fffd00" // Adjust the color to your preference
-          options={{ showSpinner: false }} // Hides the spinner
-          shallowRouting // Enable shallow routing to not reload the page
-        /> */}
-
-        <Navbar />
-        <main>{children}</main>
+      <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+          <Navbar />
+          <main>{children}</main>
       </body>
     </html>
+    </AuthProvider>
   );
 }

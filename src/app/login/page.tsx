@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
+import { useAuth } from "@/app/context/AuthContext";
 
 const LoginPage = () => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,7 +16,7 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8001/api/auth/login', {
+      const response = await fetch('http://43.205.230.104:8001/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,10 +31,8 @@ const LoginPage = () => {
       const data = await response.json();
       const { token } = data;
 
-      // Save the token to localStorage or a cookie
-      localStorage.setItem('token', token);
+      login(token);
 
-      router.push('/moderate-joke');
     } catch (err) {
       setError(err.message);
     }

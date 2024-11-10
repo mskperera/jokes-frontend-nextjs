@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/app/hooks/useAuth';
 import { fetchWithAuth } from '@/utils/fetch';
 import styles from './moderate-joke.module.css';
+import { withProtectedPage } from "@/app/hoc/withProtectedPage";
 
 const ModeratorPage = () => {
   const [joke, setJoke] = useState(null);
@@ -17,11 +17,10 @@ const ModeratorPage = () => {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isAddingNewType, setIsAddingNewType] = useState(false);
 
-  const isAuthenticated = useAuth();
   const router = useRouter();
 
   const fetchJokeTypes = async () => {
-    const response = await fetch('http://localhost:8001/api/jokes/types');
+    const response = await fetch('http://43.205.230.104:8001/api/jokes/types');
     const data = await response.json();
     setJokeTypes(data);
   };
@@ -32,7 +31,8 @@ const ModeratorPage = () => {
 
   const fetchJoke = async () => {
     try {
-      const data = await fetchWithAuth('http://localhost:8001/api/jokes/getNewJoke');
+      const data = await fetchWithAuth('http://43.205.230.104:8001/api/jokes/getNewJoke');
+      console.log('fetchJoke', data);
       if (data) {
         setJoke(data);
         setSelectedType(data.typeId);
@@ -49,12 +49,14 @@ const ModeratorPage = () => {
       setErrorMessage('');
     } catch (error) {
       console.error('Error fetching joke:', error);
+      setErrorMessage(error.message);  // Corrected this line
     }
   };
+  
 
   const handleApprove = async () => {
     try {
-      await fetchWithAuth(`http://localhost:8001/api/jokes/submitToDeliverJokes/${joke._id}`, 'PUT', null);
+      await fetchWithAuth(`http://43.205.230.104:8001/api/jokes/submitToDeliverJokes/${joke._id}`, 'PUT', null);
       setApprovalMessage('Joke has been approved and submitted to the Deliver Jokes!');
       setErrorMessage('');
       setJoke(null);
@@ -66,7 +68,7 @@ const ModeratorPage = () => {
 
   const handleReject = async () => {
     try {
-      await fetchWithAuth(`http://localhost:8001/api/jokes/reject/${joke._id}`, 'DELETE', null);
+      await fetchWithAuth(`http://43.205.230.104:8001/api/jokes/reject/${joke._id}`, 'DELETE', null);
       setErrorMessage('Joke has been rejected!');
       setJoke(null);
     } catch (error) {
@@ -83,7 +85,7 @@ const ModeratorPage = () => {
   const handleSaveEditedJoke = async () => {
     const payload = { content: editedJokeContent, typeId: selectedType };
     try {
-      const data = await fetchWithAuth(`http://localhost:8001/api/jokes/update/${joke._id}`, 'PUT', payload);
+      const data = await fetchWithAuth(`http://43.205.230.104:8001/api/jokes/update/${joke._id}`, 'PUT', payload);
       setApprovalMessage(data.message);
       setErrorMessage('');
       setHasUnsavedChanges(false);
@@ -102,7 +104,7 @@ const ModeratorPage = () => {
     }
   
     try {
-      const newType = await fetchWithAuth(`http://localhost:3333/jokes/newJokeType`, 'POST', { name: newJokeTypeName });
+      const newType = await fetchWithAuth(`http://43.205.230.104:3333/jokes/newJokeType`, 'POST', { name: newJokeTypeName });
       
       console.log('response:', newType);
       setJokeTypes((prevTypes) => [...prevTypes, newType]);
@@ -114,7 +116,7 @@ const ModeratorPage = () => {
       setApprovalMessage('New joke type added successfully!')
     } catch (error) {
       console.log('Error adding new joke type: oooooooooo', error);
-      setErrorMessage(error.message);
+      setErrorMessage('error.message');
     }
   };
   
@@ -135,18 +137,15 @@ const ModeratorPage = () => {
     setNewJokeTypeName(event.target.value);
   };
 
-  if (!isAuthenticated) {
-    return <div>Redirecting...</div>;
-  }
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Moderator Dashboard</h1>
       <div className={styles.topPanel}>
         <button className={styles.button} onClick={fetchJoke}>View Next Joke</button>
-
-        {approvalMessage && <div className={styles.successMessage}>{approvalMessage}</div>}
         {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+        {approvalMessage && <div className={styles.successMessage}>{approvalMessage}</div>}
+
       </div>
       {joke ? (
         <div>
@@ -243,4 +242,4 @@ const ModeratorPage = () => {
   );
 };
 
-export default ModeratorPage;
+export default withProtectedPage(ModeratorPage);
