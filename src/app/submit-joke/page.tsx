@@ -15,7 +15,7 @@ const SubmitJokePage = () => {
   useEffect(() => {
     const fetchJokeTypes = async () => {
       try {
-        const response = await fetch('http://localhost:8002/api/jokes/types');
+        const response = await fetch('http://43.205.230.104:8002/api/jokes/types');
         const types = await response.json();
         setJokeTypes(types);
         setJokeType(types[0]?.id || ''); // Set default type if available
@@ -32,7 +32,7 @@ const SubmitJokePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8002/api/jokes/submit', {
+      const response = await fetch('http://43.205.230.104:8002/api/jokes/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

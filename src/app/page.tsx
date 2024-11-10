@@ -12,7 +12,7 @@ const DeliverJokePage = () => {
     // Fetch available joke types when component mounts
     const fetchJokeTypes = async () => {
       try {
-        const response = await fetch('http://localhost:3333/jokes/types');
+        const response = await fetch('http://43.205.230.104:3333/jokes/types');
         const data = await response.json();
         setJokeTypes(data);
         setJokeType(data[0]?.id || ''); // Set default joke type if available
@@ -27,7 +27,7 @@ const DeliverJokePage = () => {
   const fetchJoke = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3333/jokes/random?typeId=${jokeType}`);
+      const response = await fetch(`http://43.205.230.104:3333/jokes/random?typeId=${jokeType}`);
       const data = await response.json();
       setJoke(data);
     } catch (error) {

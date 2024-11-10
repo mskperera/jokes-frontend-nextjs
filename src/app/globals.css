@@ -86,15 +86,3 @@ button{
   background-color: #b12b27;
   color: white;
 }
-
-#nprogress .bar {
-  background: #29d !important; /* Customize the progress bar color */
-}
-
-#nprogress .peg {
-  box-shadow: 0 0 10px #29d, 0 0 5px #29d !important; /* Customize the shadow */
-}
-
-#nprogress .spinner {
-  display: none !important; /* Optionally hide the spinner */
-}
