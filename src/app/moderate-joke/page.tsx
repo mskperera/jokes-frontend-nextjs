@@ -20,8 +20,7 @@ const ModeratorPage = () => {
   const router = useRouter();
 
   const fetchJokeTypes = async () => {
-    const response = await fetch('http://43.205.230.104:8001/api/jokes/types');
-    const data = await response.json();
+    const data = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/types`);
     setJokeTypes(data);
   };
 
@@ -31,7 +30,7 @@ const ModeratorPage = () => {
 
   const fetchJoke = async () => {
     try {
-      const data = await fetchWithAuth('http://43.205.230.104:8001/api/jokes/getNewJoke');
+      const data = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/getNewJoke`);
       console.log('fetchJoke', data);
       if (data) {
         setJoke(data);
@@ -56,7 +55,7 @@ const ModeratorPage = () => {
 
   const handleApprove = async () => {
     try {
-      await fetchWithAuth(`http://43.205.230.104:8001/api/jokes/submitToDeliverJokes/${joke._id}`, 'PUT', null);
+      await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/submitToDeliverJokes/${joke._id}`, 'PUT', null);
       setApprovalMessage('Joke has been approved and submitted to the Deliver Jokes!');
       setErrorMessage('');
       setJoke(null);
@@ -68,7 +67,7 @@ const ModeratorPage = () => {
 
   const handleReject = async () => {
     try {
-      await fetchWithAuth(`http://43.205.230.104:8001/api/jokes/reject/${joke._id}`, 'DELETE', null);
+      await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/reject/${joke._id}`, 'DELETE', null);
       setErrorMessage('Joke has been rejected!');
       setJoke(null);
     } catch (error) {
@@ -85,7 +84,7 @@ const ModeratorPage = () => {
   const handleSaveEditedJoke = async () => {
     const payload = { content: editedJokeContent, typeId: selectedType };
     try {
-      const data = await fetchWithAuth(`http://43.205.230.104:8001/api/jokes/update/${joke._id}`, 'PUT', payload);
+      const data = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/update/${joke._id}`, 'PUT', payload);
       setApprovalMessage(data.message);
       setErrorMessage('');
       setHasUnsavedChanges(false);
@@ -104,7 +103,7 @@ const ModeratorPage = () => {
     }
   
     try {
-      const newType = await fetchWithAuth(`http://43.205.230.104:3333/jokes/newJokeType`, 'POST', { name: newJokeTypeName });
+      const newType = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:3333/jokes/newJokeType`, 'POST', { name: newJokeTypeName });
       
       console.log('response:', newType);
       setJokeTypes((prevTypes) => [...prevTypes, newType]);
@@ -140,6 +139,7 @@ const ModeratorPage = () => {
 
   return (
     <div className={styles.container}>
+            {JSON.stringify(process.env.DELIVER_JOKES_API_URL)}
       <h1 className={styles.title}>Moderator Dashboard</h1>
       <div className={styles.topPanel}>
         <button className={styles.button} onClick={fetchJoke}>View Next Joke</button>
