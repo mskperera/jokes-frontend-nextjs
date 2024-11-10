@@ -4,6 +4,9 @@ FROM node:18-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# Install libc6-compat for SWC binary dependencies
+RUN apk add --no-cache libc6-compat
+
 # Copy package.json, package-lock.json, and tsconfig.json
 COPY package.json package-lock.json tsconfig.json ./
 
@@ -26,7 +29,7 @@ WORKDIR /app
 COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next.config.mjs ./
 COPY --from=builder /app/tsconfig.json ./
 
 # Install only production dependencies

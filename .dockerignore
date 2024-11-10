@@ -27,7 +27,6 @@ __tests__/
 Dockerfile
 
 # Ignore package-lock.json and yarn.lock (optional: you may want to include them depending on your setup)
-package-lock.json
 yarn.lock
 
 # Ignore build artifacts for production (optional: if your CI/CD pipeline does the build)
