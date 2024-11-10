@@ -34,7 +34,7 @@ const LoginPage = () => {
       login(token);
 
     } catch (err) {
-      setError(err.message);
+      setError((err as Error).message);
     }
   };
 

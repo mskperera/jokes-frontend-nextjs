@@ -6,7 +6,7 @@ import styles from "./submit-joke.module.css";
 const SubmitJokePage = () => {
   const [jokeText, setJokeText] = useState('');
   const [jokeType, setJokeType] = useState('');
-  const [jokeTypes, setJokeTypes] = useState([]);
+  const [jokeTypes, setJokeTypes] = useState<JokeType[]>([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -29,7 +29,7 @@ const SubmitJokePage = () => {
     fetchJokeTypes();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8002/api/jokes/submit`, {

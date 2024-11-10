@@ -1,14 +1,14 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchWithAuth } from '@/utils/fetch';
 import styles from './moderate-joke.module.css';
 import { withProtectedPage } from "@/app/hoc/withProtectedPage";
 
 const ModeratorPage = () => {
-  const [joke, setJoke] = useState(null);
-  const [jokeTypes, setJokeTypes] = useState([]);
-  const [selectedType, setSelectedType] = useState('');
+  const [joke, setJoke] = useState<Joke | null>(null);
+  const [jokeTypes, setJokeTypes] = useState<JokeType[]>([]);
+  const [selectedType, setSelectedType] = useState<string | null>('');
   const [editedJokeContent, setEditedJokeContent] = useState('');
   const [newJokeTypeName, setNewJokeTypeName] = useState('');
   const [approvalMessage, setApprovalMessage] = useState('');
@@ -31,7 +31,6 @@ const ModeratorPage = () => {
   const fetchJoke = async () => {
     try {
       const data = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/getNewJoke`);
-      console.log('fetchJoke', data);
       if (data) {
         setJoke(data);
         setSelectedType(data.typeId);
@@ -48,12 +47,16 @@ const ModeratorPage = () => {
       setErrorMessage('');
     } catch (error) {
       console.error('Error fetching joke:', error);
-      setErrorMessage(error.message);  // Corrected this line
+      setErrorMessage((error as Error).message);
     }
   };
-  
 
   const handleApprove = async () => {
+    if (!joke) {
+      setErrorMessage('No joke available to approve');
+      return;
+    }
+
     try {
       await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/submitToDeliverJokes/${joke._id}`, 'PUT', null);
       setApprovalMessage('Joke has been approved and submitted to the Deliver Jokes!');
@@ -66,6 +69,11 @@ const ModeratorPage = () => {
   };
 
   const handleReject = async () => {
+    if (!joke) {
+      setErrorMessage('No joke available to reject');
+      return;
+    }
+
     try {
       await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/reject/${joke._id}`, 'DELETE', null);
       setErrorMessage('Joke has been rejected!');
@@ -76,12 +84,14 @@ const ModeratorPage = () => {
     }
   };
 
-  const handleEditJokeContent = (event) => {
+  const handleEditJokeContent = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedJokeContent(event.target.value);
     setHasUnsavedChanges(true);
   };
 
   const handleSaveEditedJoke = async () => {
+    if (!joke) return;
+
     const payload = { content: editedJokeContent, typeId: selectedType };
     try {
       const data = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:8001/api/jokes/update/${joke._id}`, 'PUT', payload);
@@ -103,49 +113,44 @@ const ModeratorPage = () => {
     }
   
     try {
-      const newType = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:3333/jokes/newJokeType`, 'POST', { name: newJokeTypeName });
-      
-      console.log('response:', newType);
+      const newType:JokeType = await fetchWithAuth(`${process.env.NEXT_PUBLIC_DELIVER_JOKES_API_URL}:3333/jokes/newJokeType`, 'POST', { name: newJokeTypeName });
       setJokeTypes((prevTypes) => [...prevTypes, newType]);
       setSelectedType(newType.id);
       setNewJokeTypeName('');
       setIsAddingNewType(false);
       setErrorMessage('');
       setHasUnsavedChanges(true);
-      setApprovalMessage('New joke type added successfully!')
+      setApprovalMessage('New joke type added successfully!');
     } catch (error) {
-      console.log('Error adding new joke type: oooooooooo', error);
-      setErrorMessage('error.message');
+      console.log('Error adding new joke type:', error);
+      setErrorMessage((error as Error).message);
     }
   };
-  
-  useEffect(()=>{
-    setApprovalMessage('')
-  },[errorMessage])
 
-  useEffect(()=>{
-    setErrorMessage('')
-  },[approvalMessage])
+  useEffect(() => {
+    setApprovalMessage('');
+  }, [errorMessage]);
 
-  const handleTypeChange = (event) => {
+  useEffect(() => {
+    setErrorMessage('');
+  }, [approvalMessage]);
+
+  const handleTypeChange = (event:React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);
     setHasUnsavedChanges(true);
   };
 
-  const handleNewTypeNameChange = (event) => {
+  const handleNewTypeNameChange = (event:ChangeEvent<HTMLInputElement>) => {
     setNewJokeTypeName(event.target.value);
   };
 
-
   return (
     <div className={styles.container}>
-            {JSON.stringify(process.env.DELIVER_JOKES_API_URL)}
       <h1 className={styles.title}>Moderator Dashboard</h1>
       <div className={styles.topPanel}>
         <button className={styles.button} onClick={fetchJoke}>View Next Joke</button>
         {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
         {approvalMessage && <div className={styles.successMessage}>{approvalMessage}</div>}
-
       </div>
       {joke ? (
         <div>
@@ -153,8 +158,8 @@ const ModeratorPage = () => {
             <p><strong>Joke:</strong></p>
             <textarea
               className={styles.textarea}
-              rows="4"
-              cols="50"
+              rows={4}
+              cols={50}
               value={editedJokeContent}
               onChange={handleEditJokeContent}
             ></textarea>
@@ -165,7 +170,7 @@ const ModeratorPage = () => {
               <label htmlFor="jokeType">Joke Type: </label>
               <select
                 id="jokeType"
-                value={selectedType}
+                value={selectedType as string}
                 onChange={handleTypeChange}
                 className={styles.select}
               >
@@ -181,7 +186,6 @@ const ModeratorPage = () => {
               >
                 Add New Joke Type
               </button>
-            
             </div>
           ) : (
             <div className={styles.newJokeType}>
@@ -199,11 +203,8 @@ const ModeratorPage = () => {
               >
                 Set New Joke Type
               </button>
-              <button
-              
-                onClick={() => setIsAddingNewType(false)}
-              >
-              Cancel
+              <button onClick={() => setIsAddingNewType(false)}>
+                Cancel
               </button>
             </div>
           )}
@@ -236,7 +237,7 @@ const ModeratorPage = () => {
           </div>
         </div>
       ) : (
-        checkNoJokeFound && <div className={styles.noJokeMessage}>There are currently no jokes pending moderation. Check back later!</div>
+        checkNoJokeFound && <p>No joke available for moderation</p>
       )}
     </div>
   );

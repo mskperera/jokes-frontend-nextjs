@@ -1,7 +1,7 @@
 // src/hooks/fetchWithAuth.ts
 import { useAuth } from "./useAuth"; // Assuming this is the correct path
 
-export const fetchWithAuth = async (url: string, method = 'GET', body: any = null, isAuthenticated: boolean) => {
+export const fetchWithAuth = async (url: string, method = 'GET', body: any = null) => {
   // if (!isAuthenticated) {
   //   console.error('User is not authenticated.');
   //   return; // You can also handle redirection or other actions here
@@ -12,8 +12,9 @@ export const fetchWithAuth = async (url: string, method = 'GET', body: any = nul
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
   };
-
-  const options = {
+  
+ // Type the options as RequestInit to include body when needed
+  const options:RequestInit = {
     method,
     headers,
   };
