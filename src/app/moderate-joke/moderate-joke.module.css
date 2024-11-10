@@ -1,0 +1,223 @@
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: center;
+    color: #4a90e2;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  
+  .button {
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .button:hover {
+    background-color: #357ab7;
+  }
+  
+  .joke-content {
+    margin-bottom: 20px;
+  }
+  
+  .textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    min-height: 120px;
+    box-sizing: border-box;
+    margin-top: 10px;
+  }
+  
+  .textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+  }
+  
+  /* Joke Type Dropdown */
+  .joke-type {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .joke-type label {
+    font-size: 16px;
+    margin-right: 10px;
+    color: #333;
+  }
+  
+  .select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .select:focus {
+    border-color: #4a90e2;
+    outline: none;
+  }
+  
+  /* Buttons for Approve, Reject, and Save */
+  .actionButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .actionButtons button {
+    width: 48%;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .actionButtonApprove {
+    background-color: #119534;
+  }
+  
+  .actionButtonReject {
+    background-color: #c9302c;
+  }
+  
+  .actionButtonSave {
+    background-color: #3154d5;
+  }
+
+
+  .actionButtonApprove button:hover {
+    background-color: #0c842c;
+  }
+  
+  .actionButtonReject button:hover {
+    background-color: #b12b27;
+  }
+  
+  .actionButtonSave button:hover {
+    background-color: #2643ad;
+  }
+  
+  .noJokeMessage {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 50px;
+  }
+  
+
+  .topPanel{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .errorMessage {
+    color: #fff;
+    background-color: #f44336;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+    width:100%;
+    /* max-width: 500px; */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+
+  .successMessage {
+    color: #fff;
+    background-color: #4caf50;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+    width:100%;
+    /* max-width: 500px; */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .setNewJokeButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+ 
+.setNewJokeButton:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.setNewJokeButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+.inputField {
+  padding: 7px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newJokeType{
+  display: flex;
+gap: 0.5rem;
+align-items: center;
+}
+
+.jokeType{
+   display: flex;
+   justify-content:start;
+  gap: 0.5rem;
+  align-items: center;}
+
+.addNewJokeButton{
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
