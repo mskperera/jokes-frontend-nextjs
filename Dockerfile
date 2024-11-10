@@ -16,6 +16,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+COPY .env .env
+
 # Build the application with TypeScript
 RUN npm run build
 

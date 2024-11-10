@@ -5,7 +5,7 @@ node_modules/
 .next/
 
 # Ignore environment files (optional: you might want to use a separate .env for the container)
-.env
+# .env
 .env.local
 .env.*.local
 
